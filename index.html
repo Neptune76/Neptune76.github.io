@@ -177,7 +177,7 @@
 <pre><code>dp[i][j]: 到第i分钟，总共移动了j次的最大收益
 a[i]: 第i分钟落苹果的树
 j%2: 移动j次后Bessie在第j%2+1这颗树下，树的编号为1,2
-t=(j%2==a[i]):利用这个t记录在第i分钟能不能接到苹果
+t=(j%2+1==a[i]):利用这个t记录在第i分钟能不能接到苹果
 
 dp[i][j]=max(dp[i-1][j],dp[i-1][j-1])
 dp[i][j]=dp[i][j]+t
@@ -186,7 +186,7 @@ dp[i][j]=dp[i][j]+t
 dp[0][j]=0,j from 0 to W
 
 结果:
-max{dp[T][],j from 0 to W}
+max{dp[T][j], j from 0 to W}
 </code></pre><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3>
         
           <a class="article-more-a" href="/2017/11/29/poj-2385-Apple-Catching/#more">more >></a>
