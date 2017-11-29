@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/11/29/poj-2385-Apple-Catching/index.html">
 <meta property="og:site_name" content="Neptune">
 <meta property="og:description" content="题目描述有两棵苹果树，在T（1&amp;lt;=T&amp;lt;=1000）分钟内，每分钟都有且仅有一棵树会掉落苹果，Bessie在树下接苹果，他由一棵树移动到另一棵树的时间小于一分钟。给定T分钟内的苹果掉落序列，在移动次数限制为W（1&amp;lt;=W&amp;lt;=20）情况下，求最多能接到多少苹果。 解题思路每分钟都有动或不动两种选择，第i分钟的最大收益可以仅由第i-1分钟的最大收益和第i分钟的决策决定。所以，很容易">
-<meta property="og:updated_time" content="2017-11-29T08:34:51.194Z">
+<meta property="og:updated_time" content="2017-11-29T08:36:20.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="poj - 2385 - Apple Catching">
 <meta name="twitter:description" content="题目描述有两棵苹果树，在T（1&amp;lt;=T&amp;lt;=1000）分钟内，每分钟都有且仅有一棵树会掉落苹果，Bessie在树下接苹果，他由一棵树移动到另一棵树的时间小于一分钟。给定T分钟内的苹果掉落序列，在移动次数限制为W（1&amp;lt;=W&amp;lt;=20）情况下，求最多能接到多少苹果。 解题思路每分钟都有动或不动两种选择，第i分钟的最大收益可以仅由第i-1分钟的最大收益和第i分钟的决策决定。所以，很容易">
@@ -213,9 +213,9 @@ int main()
         {
             t=((j%2+1)==a[i]);
             if(j&gt;0)
-            dp[i][j]=max(dp[i-1][j],dp[i-1][j-1]);
+                dp[i][j]=max(dp[i-1][j],dp[i-1][j-1]);
             else
-            dp[i][j]=dp[i-1][j];
+                dp[i][j]=dp[i-1][j];
             dp[i][j]+=t;
         }
     }
