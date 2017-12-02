@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/11/30/poj-3616-Milking-Time/index.html">
 <meta property="og:site_name" content="Neptune">
 <meta property="og:description" content="题目描述农夫约翰在接下来N小时内会在某些时间段来取牛奶，每次可能的取奶时间段由一个三元组表示（开始时间，结束时间，取奶量）共M个(以下用interval(start,end,efficiency)表示)，这些时间段可能重叠。奶牛Bessie想让约翰获得最大的牛奶量，所以她要计划这N个小时在哪些时间段产奶。每次产奶后她必须在整个取奶时间段不断产奶，每次产奶后需要R小时休息时间。在这些限制下，问约翰最">
-<meta property="og:updated_time" content="2017-12-02T04:31:18.485Z">
+<meta property="og:updated_time" content="2017-12-02T08:10:28.252Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="poj - 3616 - Milking Time">
 <meta name="twitter:description" content="题目描述农夫约翰在接下来N小时内会在某些时间段来取牛奶，每次可能的取奶时间段由一个三元组表示（开始时间，结束时间，取奶量）共M个(以下用interval(start,end,efficiency)表示)，这些时间段可能重叠。奶牛Bessie想让约翰获得最大的牛奶量，所以她要计划这N个小时在哪些时间段产奶。每次产奶后她必须在整个取奶时间段不断产奶，每次产奶后需要R小时休息时间。在这些限制下，问约翰最">
@@ -256,10 +256,11 @@ interval[i]:对第i个时间段的描述
         dp[i][T]=dp[i-1][T]
 最终结果：
     dp[M][U]
-</code></pre><p>在上述描述中，我们用集合表示当前可利用的时间段，它对我们的决策进行了限制，随着每一步集合的减小，我们的算法就会收敛到某一结果。我们每一步决策都要参考当前时间段的集合做出决定。思路一和思路二都是该集合的一种实现方式，思路一中，用时间代表该集合，思路二中由时间段代表该集合。但是，对于集合来说，我们很容易判断某个时间的是否在其中，或者从集合中删除该时间段。但是我们一旦利用思路一或二中的表示方式，我们就不能有集合一样的操作方式。所以我们事先对intervale进行了排序，并从最后的一个时间段进行决策，这就保证了我们在删除某个时间段时都是相邻连续的，所以实现了类似集合一样的操作。</p>
+</code></pre><p>在上述描述中，我们用集合表示当前可利用的时间段，它对我们的决策进行了限制。我们每一步决策都要参考当前时间段的集合做出决定。思路一和思路二都是该集合的一种实现方式，思路一中，用时间代表该集合，思路二中由时间段代表该集合。但是，对于集合来说，我们很容易判断某个时间的是否在其中，或者从集合中删除该时间段。但是我们一旦利用思路一或二中的表示方式，我们就不能有集合一样的操作方式;再者，像上面的集合表示那样我们每层dp要枚举集合的各种组合，这样复杂度太高。所以我们事先对intervale进行了排序，并从最后的一个时间段进行决策，这样假如状态(i,j)时选择产奶，则对于剩余决策我们可以将第j个时间段之后的所有时间段都删除。这是因为做出了产奶的决策，所以第j个时间段对剩余决策来说已经被标记为不可用，因为我们是按照时间段从后往前做的决策，对于剩余的时间段，他们必定排在j之前，假如和j都有冲突则肯定和大于j的时间段都有冲突，所以我们可以将j及大于j的时间段都删除。而这种操作我们用数组就可以方便的实现。</p>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><a id="more"></a>
 <pre><code>#include&lt;iostream&gt;
 #include&lt;stdio.h&gt;
+#include&lt;cstring&gt;
 #include&lt;algorithm&gt;
 using namespace std;
 struct interval
@@ -268,6 +269,9 @@ struct interval
     int end;
     int efficiency;
 };
+int max(int a,int b){
+    return a&gt;b?a:b;
+}
 bool cmp(interval a,interval b)
 {
     if(a.start!=b.start)
@@ -277,8 +281,8 @@ bool cmp(interval a,interval b)
 int main()
 {
     int n,m,r,ans=0;
-    interval a[1001];
-    int dp[1001];
+    interval a[1005];
+    int dp[1005][1005];
     scanf(&quot;%d %d %d&quot;,&amp;n,&amp;m,&amp;r);
     for(int i=0;i&lt;m;i++)
     {
@@ -288,28 +292,77 @@ int main()
     }
     //按照start排序，start相同则按照end排序
     sort(a,a+m,cmp);
-    for(int i=0;i&lt;m;i++)
+    a[m].start=n+r;
+    memset(dp,0,sizeof(dp));
+    for(int i=1;i&lt;=m;i++)
     {
-        dp[i]=a[i].efficiency;
-        for(int j=0;j&lt;i;j++)
+        for(int j=1;j&lt;=m;j++)
         {
-            if(a[j].end&lt;=a[i].start)
-            {
-                if(dp[i]&lt;dp[j]+a[i].efficiency)
-                {
-                    dp[i]=dp[j]+a[i].efficiency;
-                }
+            if(a[i-1].end&lt;=a[j].start){
+                dp[i][j]=max(dp[i-1][j],dp[i-1][i-1]+a[i-1].efficiency);
+            }else{
+                dp[i][j]=dp[i-1][j];
             }
         }
     }
+    /*
+    for(int i=0;i&lt;=m;i++){
+        for(int j=0;j&lt;=m;j++){
+            printf(&quot;%d &quot;,dp[i][j]);
+        }
+        printf(&quot;\n&quot;);
+    }*/
+    printf(&quot;%d&quot;,dp[m][m]);
+}
+
+
+//递推关系式优化后进行降维
+#include&lt;iostream&gt;
+#include&lt;stdio.h&gt;
+#include&lt;cstring&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+struct interval
+{
+    int start;
+    int end;
+    int efficiency;
+};
+int max(int a,int b){
+    return a&gt;b?a:b;
+}
+bool cmp(interval a,interval b)
+{
+    if(a.start!=b.start)
+        return a.start&lt;b.start;
+    return a.end&lt;b.end;
+}
+int main()
+{
+    int n,m,r,ans=0;
+    interval a[1005];
+    int dp[1005];
+    scanf(&quot;%d %d %d&quot;,&amp;n,&amp;m,&amp;r);
     for(int i=0;i&lt;m;i++)
     {
-        if(ans&lt;dp[i])
+        scanf(&quot;%d %d %d&quot;,&amp;a[i].start,&amp;a[i].end,&amp;a[i].efficiency);
+        //每个时间段结束时间加上间隔时间
+        a[i].end+=r;
+    }
+    //按照start排序，start相同则按照end排序
+    sort(a,a+m,cmp);
+    a[m].start=n+r;
+    memset(dp,0,sizeof(dp));
+    for(int i=1;i&lt;=m;i++)
+    {
+        for(int j=m;j&gt;=1;j--)
         {
-            ans=dp[i];
+            if(a[i-1].end&lt;=a[j].start){
+                dp[j]=max(dp[j],dp[i-1]+a[i-1].efficiency);
+            }
         }
     }
-    printf(&quot;%d&quot;,ans);
+    printf(&quot;%d&quot;,dp[m]);
 }
 </code></pre>
       
