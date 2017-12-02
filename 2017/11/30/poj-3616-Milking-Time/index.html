@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2017 | Neptune</title>
+  <title>poj - 3616 - Milking Time | Neptune</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Neptune">
-<meta property="og:url" content="http://yoursite.com/archives/2017/index.html">
+  <meta name="description" content="题目描述农夫约翰在接下来N小时内会在某些时间段来取牛奶，每次可能的取奶时间段由一个三元组表示（开始时间，结束时间，取奶量）共M个(以下用interval(start,end,efficiency)表示)，这些时间段可能重叠。奶牛Bessie想让约翰获得最大的牛奶量，所以她要计划这N个小时在哪些时间段产奶。每次产奶后她必须在整个取奶时间段不断产奶，每次产奶后需要R小时休息时间。在这些限制下，问约翰最">
+<meta name="keywords" content="动态规划,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="poj - 3616 - Milking Time">
+<meta property="og:url" content="http://yoursite.com/2017/11/30/poj-3616-Milking-Time/index.html">
 <meta property="og:site_name" content="Neptune">
+<meta property="og:description" content="题目描述农夫约翰在接下来N小时内会在某些时间段来取牛奶，每次可能的取奶时间段由一个三元组表示（开始时间，结束时间，取奶量）共M个(以下用interval(start,end,efficiency)表示)，这些时间段可能重叠。奶牛Bessie想让约翰获得最大的牛奶量，所以她要计划这N个小时在哪些时间段产奶。每次产奶后她必须在整个取奶时间段不断产奶，每次产奶后需要R小时休息时间。在这些限制下，问约翰最">
+<meta property="og:updated_time" content="2017-12-02T04:31:18.485Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Neptune">
+<meta name="twitter:title" content="poj - 3616 - Milking Time">
+<meta name="twitter:description" content="题目描述农夫约翰在接下来N小时内会在某些时间段来取牛奶，每次可能的取奶时间段由一个三元组表示（开始时间，结束时间，取奶量）共M个(以下用interval(start,end,efficiency)表示)，这些时间段可能重叠。奶牛Bessie想让约翰获得最大的牛奶量，所以她要计划这N个小时在哪些时间段产奶。每次产奶后她必须在整个取奶时间段不断产奶，每次产奶后需要R小时休息时间。在这些限制下，问约翰最">
   
     <link rel="alternative" href="/atom.xml" title="Neptune" type="application/atom+xml">
   
@@ -150,36 +155,191 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-poj-3616-Milking-Time" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      poj - 3616 - Milking Time
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/30/poj-3616-Milking-Time/" class="archive-article-date">
+
+        
+        <a href="/2017/11/30/poj-3616-Milking-Time/" class="archive-article-date">
   	<time datetime="2017-11-29T23:17:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-30</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/30/poj-3616-Milking-Time/">poj - 3616 - Milking Time</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>农夫约翰在接下来N小时内会在某些时间段来取牛奶，每次可能的取奶时间段由一个三元组表示（开始时间，结束时间，取奶量）共M个(以下用interval(start,end,efficiency)表示)，这些时间段可能重叠。奶牛Bessie想让约翰获得最大的牛奶量，所以她要计划这N个小时在哪些时间段产奶。每次产奶后她必须在整个取奶时间段不断产奶，每次产奶后需要R小时休息时间。在这些限制下，问约翰最多获得多少奶。</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><h4 id="思路一（会超时，未实现）"><a href="#思路一（会超时，未实现）" class="headerlink" title="思路一（会超时，未实现）"></a>思路一（会超时，未实现）</h4><p>每个时间段Bessie都可以选择产奶或者不产奶。所以枚举各种选择+动态规划避免重复计算。即，初始状态为（M，N）表示第M个时间段决定产奶与否，假如产奶，则剩余状态的决策为（M-1，interval[M].start-R）;假如不产奶，则剩余状态的决策为（M-1，N）。在每种状态要根据剩余时间（也就是第二个参数）先检查是否能够产奶，然后决定是否要产奶。利用这种策略，可以立即写出递归函数，不过显然会存在重复计算。所以利用动态规划，自底向上计算。<br><strong>注意点：要事先对interval按照开始时间进行递增排序(排序原因见思路总结)。</strong></p>
+<pre><code>//递归表示时：
+初始状态：（M，N）：针对第M个时间段决策时，时间限制为1--N
+针对状态(i,j):针对第i个时间段，时间限制为j时
+    case.1 满足产奶条件，即 interval[i].end&lt;=j
+        假如产奶，则剩余状态为(i-1,interval[i].start-R)
+        假如不产，则剩余状态为(i-1,j)
+    case.2 不满足产奶条件，即 intevar[i].end&gt;j
+        剩余状态为(i-1,j)
+另，若有两种选择，根据最优子结构返回二者之中的较大者。
 
-        <div class="article-info info-on-right">
-          
+//dp表示（由于dp采用自底向上的计算方式，所以对时间限制必须做1--N的枚举，这个代价太大，因此会超时）
+//dp[i][j]:对第i个时间段，剩余时间为j时的决策
+//interval[i],第i个时间段的描述
+
+初始化：
+    dp[0][j]=0 j from 0 to N
+转移方程：
+    //第i个时间段可以产奶
+    if(j&gt;=interval[i].end){
+        dp[i][j]=max(dp[i-1][j],dp[i-1][interval[i].start-R]+interval[i].efficiency)
+    //第i个时间段不能产奶
+    }else{
+        dp[i][j]=dp[i-1][j]
+    }
+最终结果：
+    max{dp[M][j]},j from 0 to N
+</code></pre><h4 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h4><p>思路一中对（M，N）进行了dp搜索，因为1&lt;=N&lt;=1000,000所以dp状态过多，会产生超时。所以尝试修改搜索策略。dp作为对递归枚举的一种优化，递归枚举的策略决定了dp搜索的效率。思路一中我们对（M，N）进行了递归搜索，决定了dp搜索也是针对（M，N）的。现在我们思考如何减小枚举空间。我们注意到在思路一的枚举过程中，我们把时间从1–N进行了完全的枚举，事实上这是有些浪费的（其实相比于记忆化搜索，dp数组存在着极大可能的多余枚举，大多数问题这种多余的枚举代价是可以忽略的，有些问题如果多余的枚举代价比较大，则可以借助更换枚举策略进一步优化，显然本题就属于这种情况）。因为题目中已经把时间分成了M段，所以我们没必要在对1–N中每种时间进行枚举，只需要枚举M个时间段即可。</p>
+<pre><code>//递归枚举时：
+初始调用状态(M,M):针对第M个时间段决策时，时间段限制为1--M
+
+针对状态(i,j):针对第i个时间段决策时，时间段限制为1--j
+    case.1 满足产奶条件，即 i&lt;=j
+        假如产奶，则剩余状态为(i-1,i-1)
+        假如不产，则剩余状态为(i-1,i)
+    case.2 不满足产奶条件，即 i&gt;j
+        剩余状态为(i-1,j)
+另，像思路一中一样，每次决策时仍需判断是否满足产奶条件，也要事先排序。
+注意点：这里的时间段限制相当于思路一中的时间限制，只是用了时间段来替代时间，这也是我们优化的所在。
+
+//dp表示
+//dp[i][j]:对第i个时间段，剩余时间段为0--j时的决策
+//interval[i],第i个时间段的描述
+
+初始化：
+    dp[0][j]=0, j from 0 to M
+状态转移方程:
+    case.1 interval[i].end&lt;=interval[j].start-R 可以产奶
+        dp[i][j]=max(dp[i-1][i-1]+interval[i].efficiency,dp[i-1][j])
+    case.2 else  不可以产奶
+        dp[i][j]=dp[i-1][j]
+</code></pre><h3 id="思路总结"><a href="#思路总结" class="headerlink" title="思路总结"></a>思路总结</h3><p>不管是思路一还是思路二都是在枚举各种决策，而每次决策过程都受到一定的限制，这种限制有不同的表示方式，所以带来了不同的效率。下面针对该题做一个抽象的概括并解释上述两种方法中排序的作用。</p>
+<pre><code>U:所有时间段的集合
+T:当前可用的时间段的集合
+i:对第i个时间段的决策
+ti:第i个时间段
+interval[i]:对第i个时间段的描述
+//递归策略
+初始调用状态(i=M,T=U)
+
+针对状态(i,T)
+    case.1 ti in T
+        若产奶:剩余状态为(i-1,T-ti)
+        若不产:剩余状态为(i-1,T)
+    case.2 ti not in T
+        剩余状态:(i-1,T)
+
+//dp表示
+//dp[i][T]:对第i个时间段，剩余时间段集合为T时的决策
+
+初始化：
+    dp[0][u]=0,u 是所有时间段的任意一个组合
+
+状态转移方程:
+    case.1 i in T 即，允许该时间段产奶
+        dp[i][T]=max(dp[i-1][T-ti]+interval[i].efficiency,dp[i-1][T])
+    case.2 i not in T 即，不允许该时间段产奶
+        dp[i][T]=dp[i-1][T]
+最终结果：
+    dp[M][U]
+</code></pre><p>在上述描述中，我们用集合表示当前可利用的时间段，它对我们的决策进行了限制，随着每一步集合的减小，我们的算法就会收敛到某一结果。我们每一步决策都要参考当前时间段的集合做出决定。思路一和思路二都是该集合的一种实现方式，思路一中，用时间代表该集合，思路二中由时间段代表该集合。但是，对于集合来说，我们很容易判断某个时间的是否在其中，或者从集合中删除该时间段。但是我们一旦利用思路一或二中的表示方式，我们就不能有集合一样的操作方式。所以我们事先对intervale进行了排序，并从最后的一个时间段进行决策，这就保证了我们在删除某个时间段时都是相邻连续的，所以实现了类似集合一样的操作。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><a id="more"></a>
+<pre><code>#include&lt;iostream&gt;
+#include&lt;stdio.h&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+struct interval
+{
+    int start;
+    int end;
+    int efficiency;
+};
+bool cmp(interval a,interval b)
+{
+    if(a.start!=b.start)
+        return a.start&lt;b.start;
+    return a.end&lt;b.end;
+}
+int main()
+{
+    int n,m,r,ans=0;
+    interval a[1001];
+    int dp[1001];
+    scanf(&quot;%d %d %d&quot;,&amp;n,&amp;m,&amp;r);
+    for(int i=0;i&lt;m;i++)
+    {
+        scanf(&quot;%d %d %d&quot;,&amp;a[i].start,&amp;a[i].end,&amp;a[i].efficiency);
+        //每个时间段结束时间加上间隔时间
+        a[i].end+=r;
+    }
+    //按照start排序，start相同则按照end排序
+    sort(a,a+m,cmp);
+    for(int i=0;i&lt;m;i++)
+    {
+        dp[i]=a[i].efficiency;
+        for(int j=0;j&lt;i;j++)
+        {
+            if(a[j].end&lt;=a[i].start)
+            {
+                if(dp[i]&lt;dp[j]+a[i].efficiency)
+                {
+                    dp[i]=dp[j]+a[i].efficiency;
+                }
+            }
+        }
+    }
+    for(int i=0;i&lt;m;i++)
+    {
+        if(ans&lt;dp[i])
+        {
+            ans=dp[i];
+        }
+    }
+    printf(&quot;%d&quot;,ans);
+}
+</code></pre>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -195,210 +355,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/11/30/poj-3616-Milking-Time/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/29/poj-2385-Apple-Catching/" class="archive-article-date">
-  	<time datetime="2017-11-28T23:15:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/29/poj-2385-Apple-Catching/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">poj - 2385 - Apple Catching</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/29/poj-2385-Apple-Catching/">poj - 2385 - Apple Catching</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">动态规划</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/26/poj-2229-Sumsets/" class="archive-article-date">
-  	<time datetime="2017-11-26T01:46:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/26/poj-2229-Sumsets/">poj - 2229 - Sumsets</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">动态规划</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/26/poj-3176-Cow-Bowling/" class="archive-article-date">
-  	<time datetime="2017-11-25T22:45:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/26/poj-3176-Cow-Bowling/">poj - 3176 - Cow Bowling</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">动态规划</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/20/Heap-Priority-queue/" class="archive-article-date">
-  	<time datetime="2017-11-20T14:41:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/20/Heap-Priority-queue/">堆和优先队列</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/19/poj-3259-Wormholes/" class="archive-article-date">
-  	<time datetime="2017-11-19T07:36:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/19/poj-3259-Wormholes/">poj_3259_Wormholes</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -421,8 +477,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
